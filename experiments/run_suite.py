@@ -33,6 +33,10 @@ from benchmarks.deep_autoencoder import (
     run_deep_autoencoder_suite,
     plot_deep_autoencoder
 )
+from benchmarks.modular_addition import (
+    run_modular_addition_suite,
+    plot_modular_addition
+)
 
 
 def run_full_suite():
@@ -118,6 +122,35 @@ def run_full_suite():
         } for m in ["Adam", "AdamW", "SGD-M", "SAM", "FRTE"]
     }
     summary["exp3_autoencoder"]["frte_mean_backtracks"] = res3["frte_mean_backtracks"]
+
+    # ------------------------------------------------------------------
+    # 4. Modular Addition (a + b) mod 97 (5 seeds)
+    # ------------------------------------------------------------------
+    print("\n--- Running Benchmark 4: Modular Addition (a + b) mod 97 (5 Seeds) ---")
+    t0 = time.time()
+    res4, eval_data4 = run_modular_addition_suite(p=97, budget=350, seeds=SEEDS)
+    fig4_path = "/private/tmp/frte_project/reports/figures/exp4_modular_addition.png"
+    plot_modular_addition(res4, eval_data4, budget=350, save_path=fig4_path)
+    dur4 = time.time() - t0
+    print(f"Done in {dur4:.2f}s! Figure saved to {fig4_path}")
+    st4 = res4["stats"]
+    for m in ["Adam", "AdamW", "SGD-M", "SAM", "FRTE"]:
+        print(f"  {m:6s}: Val Loss = {st4[m]['mean_val_loss']:.3f} +/- {st4[m]['std_val_loss']:.3f} | Train Acc = {st4[m]['mean_train_acc']*100:.1f}% | Val Acc = {st4[m]['mean_val_acc']*100:.1f}%")
+    print(f"  FRTE Mean Backtracks: {res4['frte_mean_backtracks']:.1f}")
+
+    summary["exp4_modular_addition"] = {
+        m: {
+            "mean_train_loss": st4[m]["mean_train_loss"],
+            "std_train_loss": st4[m]["std_train_loss"],
+            "mean_val_loss": st4[m]["mean_val_loss"],
+            "std_val_loss": st4[m]["std_val_loss"],
+            "mean_train_acc": st4[m]["mean_train_acc"],
+            "std_train_acc": st4[m]["std_train_acc"],
+            "mean_val_acc": st4[m]["mean_val_acc"],
+            "std_val_acc": st4[m]["std_val_acc"]
+        } for m in ["Adam", "AdamW", "SGD-M", "SAM", "FRTE"]
+    }
+    summary["exp4_modular_addition"]["frte_mean_backtracks"] = res4["frte_mean_backtracks"]
 
     with open("/private/tmp/frte_project/reports/benchmark_summary.json", "w") as f:
         json.dump(summary, f, indent=2)

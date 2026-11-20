@@ -28,6 +28,7 @@ frte_project/
 │   ├── deceptive_landscape.py        # Benchmark 1: Multimodal 2D deceptive landscape
 │   ├── pinn.py                       # Benchmark 2: Stiff reaction-diffusion PINN (lambda = 150)
 │   ├── deep_autoencoder.py           # Benchmark 3: Fashion-MNIST 784-500-250-30 bottleneck (1.4M params)
+│   ├── modular_addition.py           # Benchmark 4: Modular arithmetic (a + b) mod 97 memorization corridor
 │   └── sam.py                        # Sharpness-Aware Minimization baseline wrapper
 ├── experiments/
 │   └── run_suite.py                  # Master runner with multi-seed statistics (mu +/- sigma)
@@ -35,7 +36,8 @@ frte_project/
 │   ├── figures/                      # High-resolution benchmark figures
 │   │   ├── exp1_deceptive_landscape.png
 │   │   ├── exp2_pinn.png
-│   │   └── exp3_deep_autoencoder.png
+│   │   ├── exp3_deep_autoencoder.png
+│   │   └── exp4_modular_addition.png
 │   ├── benchmark_summary.json        # Consolidated quantitative metrics (mean +/- std)
 │   └── SCIENTIFIC_REPORT.md          # Comprehensive theoretical foundations & empirical paper
 ├── src/
