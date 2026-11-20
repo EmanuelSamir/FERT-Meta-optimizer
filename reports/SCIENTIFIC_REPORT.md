@@ -107,7 +107,7 @@ $$X_{\mathrm{fail}} = \left[ (\theta_{t-w+1} - \theta_{\mathrm{anc}}), \dots, (\
 where $w$ is the trajectory window length ($w \ll D$, typically $5 \le w \le 20$).
 
 #### Theorem 1 (Dual-Gram Grassmannian Basis Extraction)
-Let $X \in \mathbb{R}^{D \times w}$ with $w \ll D$. Computing the singular value decomposition (SVD) directly on $X$ requires $O(D w^2)$ time. The principal orthonormal basis $Q \in \mathbb{R}^{D \times k}$ ($k \le w$) spanning $\operatorname{col}(X)$ on the Grassmannian manifold $\operatorname{Gr}(k, D)$ can be computed in $O(w^2 D)$ time and $O(w^2)$ auxiliary memory via the Dual-Gram method.
+Let $X \in \mathbb{R}^{D \times w}$ with $w \ll D$. Computing the singular value decomposition (SVD) directly on $X$ requires $O(D w^2)$ time. The principal orthonormal basis $Q \in \mathbb{R}^{D \times k}$ ($k \le w$) spanning $\mathrm{col}(X)$ on the Grassmannian manifold $\mathrm{Gr}(k, D)$ can be computed in $O(w^2 D)$ time and $O(w^2)$ auxiliary memory via the Dual-Gram method.
 
 *Proof.*  
 1. Construct the Gram matrix $K \in \mathbb{R}^{w \times w}$:
@@ -115,8 +115,8 @@ Let $X \in \mathbb{R}^{D \times w}$ with $w \ll D$. Computing the singular value
    Evaluating $K$ requires $w(w+1)/2$ inner products in $\mathbb{R}^D$, incurring $\frac{w^2 D}{2}$ floating point operations (FLOPs).
 2. Perform spectral decomposition of the symmetric positive semi-definite matrix $K$:
    $$K = V \Lambda V^T$$
-   where $V \in \mathbb{R}^{w \times w}$ is orthogonal ($V^T V = I_w$) and $\Lambda = \operatorname{diag}(\lambda_1, \dots, \lambda_w)$ with $\lambda_1 \ge \dots \ge \lambda_w \ge 0$. The complexity of this step is $O(w^3)$, which is completely independent of the model dimension $D$.
-3. Let $V_k \in \mathbb{R}^{w \times k}$ and $\Lambda_k = \operatorname{diag}(\lambda_1, \dots, \lambda_k)$ correspond to the $k$ strictly positive eigenvalues ($\lambda_i > \epsilon$). Define:
+   where $V \in \mathbb{R}^{w \times w}$ is orthogonal ($V^T V = I_w$) and $\Lambda = \mathrm{diag}(\lambda_1, \dots, \lambda_w)$ with $\lambda_1 \ge \dots \ge \lambda_w \ge 0$. The complexity of this step is $O(w^3)$, which is completely independent of the model dimension $D$.
+3. Let $V_k \in \mathbb{R}^{w \times k}$ and $\Lambda_k = \mathrm{diag}(\lambda_1, \dots, \lambda_k)$ correspond to the $k$ strictly positive eigenvalues ($\lambda_i > \epsilon$). Define:
    $$Q = X V_k \Lambda_k^{-1/2} \in \mathbb{R}^{D \times k}$$
 4. We verify the orthonormality of $Q$:
    $$\begin{aligned}
@@ -142,12 +142,12 @@ $$\mathcal{P}_Q^\perp(g) = (I - Q Q^T) g = g - Q (Q^T g)$$
 **Theorem 2 (Strict Subspace Transversality & Energy Conservation):**  
 Let $g \in \mathbb{R}^D$ be any non-zero gradient vector, and let $\tilde{g} = \mathcal{P}_Q^\perp(g)$. Then:
 1. $\tilde{g}$ is strictly orthogonal to the failed corridor:
-   $$\langle \tilde{g}, q \rangle = 0 \quad \forall q \in \operatorname{span}(Q)$$
+   $$\langle \tilde{g}, q \rangle = 0 \quad \forall q \in \mathrm{span}(Q)$$
 2. When norm-preservation is applied, $\tilde{g}_{\mathrm{scaled}} = \|\tilde{g}\|^{-1} \|g\| \tilde{g}$, the effective learning rate along the transverse manifold is strictly preserved:
    $$\|\tilde{g}_{\mathrm{scaled}}\|_2 = \|g\|_2$$
 
 *Proof.*  
-1. For any $v \in \operatorname{span}(Q)$, $v = Q c$ for some $c \in \mathbb{R}^k$.
+1. For any $v \in \mathrm{span}(Q)$, $v = Q c$ for some $c \in \mathbb{R}^k$.
    $$\langle \tilde{g}, v \rangle = v^T \tilde{g} = c^T Q^T (I - Q Q^T) g = c^T (Q^T - Q^T Q Q^T) g$$
    Since $Q^T Q = I_k$, we have $Q^T - I_k Q^T = 0$. Hence $\langle \tilde{g}, v \rangle = 0$.
 2. The norm rescaling trivially scales $\tilde{g}$ by the scalar ratio $\|g\|_2 / \|\tilde{g}\|_2$, yielding $\|\tilde{g}_{\mathrm{scaled}}\|_2 = \|g\|_2$ whenever $\|\tilde{g}\|_2 > 0$. $\blacksquare$
