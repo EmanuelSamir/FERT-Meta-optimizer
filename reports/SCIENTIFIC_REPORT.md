@@ -13,7 +13,7 @@ Modern gradient-based optimizers in machine learning—including stochastic grad
 
 In this work, we formulate, prove, and empirically substantiate the mathematical foundations of **FRTE** (*First Return, Then Explore*), a principled, transparent non-Markovian meta-optimizer. FRTE wraps any base gradient optimizer and introduces two coupled mathematical operators:
 1. **The First Return Operator ($\mathcal{R}$):** Non-Markovian rollback of parameter trajectories to a verified functional checkpoint $\theta_{\mathrm{anc}}$ coupled with an instantaneous purge of corrupted momentum buffers, cleanly breaking the trapped Markov chain.
-2. **The Then Explore Operator ($\mathcal{E}$):** Extraction of the principal tangent subspace of the failed descent corridor on the Grassmannian manifold $\operatorname{Gr}(k, D)$ via a scalable Dual-Gram spectral decomposition executing in $O(w^2 D)$ time ($w \ll D$), followed by orthogonal gradient projection $\tilde{g} = (I - Q Q^T) g$ for $\tau_{\mathrm{explore}}$ steps.
+2. **The Then Explore Operator ($\mathcal{E}$):** Extraction of the principal tangent subspace of the failed descent corridor on the Grassmannian manifold $\mathrm{Gr}(k, D)$ via a scalable Dual-Gram spectral decomposition executing in $\mathcal{O}(w^2 D)$ time ($w \ll D$), followed by orthogonal gradient projection $\tilde{g} = (I - Q Q^T) g$ for $\tau_{\mathrm{explore}}$ steps.
 
 We present formal proofs of Markov chain rupture, subspace transversality, and linear computational complexity $O(w^2 D)$. Across three canonical non-convex benchmarks evaluated across multiple independent random seeds ($\mu \pm \sigma$)—a multimodal deceptive 2D landscape, a stiff reaction-diffusion PINN ($\lambda = 150$), and a deep bottleneck autoencoder ($1.4 \times 10^6$ parameters) on Fashion-MNIST—FRTE systematically escapes entrapment where Adam, AdamW, and SAM fail, reducing PINN solution $L_2$ error by $4.5\times$ ($0.00044$ vs $0.00197$) and improving deep autoencoder test reconstruction to $0.01865$ under strict budget-matching.
 
@@ -88,7 +88,7 @@ Let $\mathcal{A} = \{(\theta_{\mathrm{anc}}^{(i)}, \mathcal{L}_{\mathrm{anc}}^{(
 **Definition 1 (First Return Operator $\mathcal{R}$):**  
 Upon detection of optimization failure at step $t$ (triggered when loss stagnation persists for $\gamma$ consecutive checks or loss diverges by ratio $\rho$), the operator $\mathcal{R}$ maps the optimization state:
 $$\mathcal{R}(\theta_t, m_t, v_t) = (\theta_{\mathrm{anc}}, \mathbf{0}, \mathbf{0})$$
-where $\theta_{\mathrm{anc}} = \operatorname{select}(\mathcal{A})$.
+where $\theta_{\mathrm{anc}} = \mathrm{select}(\mathcal{A})$.
 
 **Lemma 1 (Markov Chain Rupture):**  
 *Under the application of $\mathcal{R}$, the forward conditional transition distribution decouples completely from the failure trajectory history:*

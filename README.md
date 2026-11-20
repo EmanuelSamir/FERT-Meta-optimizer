@@ -16,7 +16,7 @@ Standard deep learning gradient optimizers (SGD-Momentum, Adam, AdamW, SAM) oper
 
 **FRTE** (*First Return, Then Explore*) is a principled, transparent **non-Markovian meta-optimizer** implemented in PyTorch that wraps any base gradient optimizer. It resolves non-convex stagnation via two coupled operators:
 - **First Return ($\mathcal{R}$):** Stateless rollback to an archived functional checkpoint $\theta_{\mathrm{anc}}$ coupled with an instantaneous purge of corrupt momentum moments, rupturing the trapped Markov chain.
-- **Then Explore ($\mathcal{E}$):** Extraction of the Grassmannian tangent subspace $\operatorname{span}(Q) \in \operatorname{Gr}(k, D)$ of the failed trajectory corridor via an $O(w^2 D)$ Dual-Gram spectral decomposition ($w \ll D$), followed by orthogonal gradient projection $\tilde{g} = (I - Q Q^T) g$ for $\tau_{\mathrm{explore}}$ steps, strictly forbidding re-traversal of the failed descent path.
+- **Then Explore ($\mathcal{E}$):** Extraction of the Grassmannian tangent subspace $\mathrm{span}(Q) \in \mathrm{Gr}(k, D)$ of the failed trajectory corridor via an $\mathcal{O}(w^2 D)$ Dual-Gram spectral decomposition ($w \ll D$), followed by orthogonal gradient projection $\tilde{g} = (I - Q Q^T) g$ for $\tau_{\mathrm{explore}}$ steps, strictly forbidding re-traversal of the failed descent path.
 
 ---
 
